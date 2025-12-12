@@ -1,0 +1,62 @@
+import time
+import random
+import json
+from datetime import datetime
+
+# CONFIGURATION
+# In a real deployment, these would be API keys for OddsJam or TheRundown
+SPORTS = ["Soccer", "Basketball", "Tennis"]
+SUSPICION_THRESHOLD = 0.15  # 15% drop in odds triggers an alert
+
+print("[ARENA PRIME] INITIALIZING GLOBAL ODDS SCANNER...")
+print("[ARENA PRIME] WATCHING FOR 'SMART MONEY' MOVEMENTS...")
+
+class MatchEvent:
+    def __init__(self, sport, teams, open_odds, current_odds):
+        self.sport = sport
+        self.teams = teams
+        self.open_odds = open_odds       # e.g., 2.50
+        self.current_odds = current_odds # e.g., 1.90
+        self.timestamp = datetime.now()
+
+    def analyze_movement(self):
+        # Calculate the drop percentage
+        drop = (self.open_odds - self.current_odds) / self.open_odds
+        
+        # Calculate Implied Probability (1 / Decimal Odds)
+        implied_prob_open = (1 / self.open_odds) * 100
+        implied_prob_curr = (1 / self.current_odds) * 100
+        
+        return drop, implied_prob_open, implied_prob_curr
+
+def scan_market():
+    # SIMULATION: Generating fake market data to test the logic
+    # In production, this requests data from the API
+    
+    # Scenario: A "Fixed" Tennis Match in a lower league
+    fake_feed = [
+        MatchEvent("Tennis", "Djokovic vs Alcaraz", 1.50, 1.48), # Normal movement
+        MatchEvent("Soccer", "Man City vs Liverpool", 2.10, 2.05), # Normal movement
+        MatchEvent("Basketball", "Unknown Team A vs Unknown Team B", 3.50, 1.80) # SUSPICIOUS CRASH
+    ]
+    
+    for match in fake_feed:
+        drop, prob_open, prob_curr = match.analyze_movement()
+        
+        if drop > SUSPICION_THRESHOLD:
+            print("\n" + "="*50)
+            print(f"🚨 [ALERT] SUSPICIOUS ACTIVITY DETECTED: {match.sport}")
+            print(f"MATCH: {match.teams}")
+            print(f"📉 ODDS DROP: {match.open_odds} -> {match.current_odds} (-{drop*100:.1f}%)")
+            print(f"🧠 IMPLIED PROBABILITY SHIFT: {prob_open:.1f}% -> {prob_curr:.1f}%")
+            print(f"⚠️ ANALYSIS: HEAVY INSIDER VOLUME DETECTED.")
+            print("="*50 + "\n")
+        else:
+            print(f"[SCAN] {match.teams}: Market Stable.")
+
+if __name__ == "__main__":
+    while True:
+        scan_market()
+        # Scan every 5 minutes
+        print("[ARENA PRIME] Sleeping for next cycle...")
+        time.sleep(5)
