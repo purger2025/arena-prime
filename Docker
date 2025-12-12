@@ -1,0 +1,10 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install Math Libraries for Probability Calculation
+RUN pip install numpy scipy pandas
+
+COPY arena_prime.py .
+
+CMD ["python", "arena_prime.py"]
