@@ -1,0 +1,19 @@
+const handleCommand = async () => {
+  if (status === 'processing') return;
+  
+  setStatus('processing');
+  addLog("SIGNAL INTERCEPTED: " + query);
+  addLog("CONSULTING AGENT_BRISTOL_BARON...");
+  addLog("ECHO DETECTED: THE BLOODLINE IS ACTIVE.");
+
+  try {
+    // Calling the Neural Forge (The Twins)
+    const intel = await fetchLiveIntel(query); 
+    setAnalysis(intel);
+    setStatus('complete');
+    addLog("PHINANCE INTEL SECURED. THE PARADISE IS READY.");
+  } catch (error) {
+    addLog("ERROR: DATA STREAM BLOCKED. STANDING THE GAP.");
+    setStatus('error');
+  }
+};
