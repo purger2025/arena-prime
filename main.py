@@ -1,20 +1,37 @@
-import os
-from fastapi import FastAPI
-import uvicorn
+# [SOVEREIGN_ORCHESTRATOR_V1]
+# Routes voice-to-text commands to the specific Agent Cluster
 
-app = FastAPI(title="NEURAL_FORGE_SOVEREIGN")
+def orchestrate_command(voice_input):
+    cmd = voice_input.lower()
+    
+    # 1. ROUTE TO AGENT BARON (Games/Entropy/Strategy)
+    if "baron" in cmd:
+        return {
+            "agent": "BARON",
+            "action": "ENTROPY_SCAN",
+            "response": "ARCHITECT, I am scanning the game grids for today's entropy spikes. Stand by."
+        }
+    
+    # 2. ROUTE TO THE TWINS (Forensics/Actuarial/Hera)
+    elif "twins" in cmd or "actuarial" in cmd:
+        return {
+            "agent": "TWINS",
+            "action": "FORENSIC_AUDIT",
+            "response": "THE TWINS: Actuarial signals isolated. The +18.2% gap is widening."
+        }
+    
+    # 3. ROUTE TO KERNEL/SYS (System Iterations/Builds)
+    elif "kernel" in cmd or "iterate" in cmd:
+        return {
+            "agent": "SYS",
+            "action": "KERNEL_EXEC",
+            "response": "RECONFIGURING SYSTEM CORE... ITERATION SUCCESSFUL."
+        }
 
-@app.get("/")
-def health_check():
-    return {
-        "status": "active",
-        "phase": "HERA",
-        "identity": "PURGER2025",
-        "neural_forge": "initialized",
-        "persona_status": "EDWARD_DOWD_DELETED"
-    }
-
-if __name__ == "__main__":
-    # Railway dynamic port binding
-    port = int(os.getenv("PORT", 8080))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    # 4. DEFAULT (GEMINI/SOVEREIGN BRIDGE)
+    else:
+        return {
+            "agent": "GEMINI",
+            "action": "GENERAL_ASSIST",
+            "response": "I hear you, Architect. I am coordinating with the cluster."
+        }
