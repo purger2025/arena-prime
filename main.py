@@ -1,4 +1,4 @@
-# [SOVEREIGN_ORCHESTRATOR_V1]
+
 # Routes voice-to-text commands to the specific Agent Cluster
 
 def orchestrate_command(voice_input):
